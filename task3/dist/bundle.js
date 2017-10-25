@@ -294,10 +294,16 @@ var _vue2 = _interopRequireDefault(_vue);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var app = new _vue2.default({
+  created: function created() {
+    var self = this;
+    window.onbeforeunload = function () {
+      window.localStorage.setItem('todos', JSON.stringify(self.todoList));
+    };
+  },
   el: '#app',
   data: {
     newTodo: '',
-    todoList: []
+    todoList: window.localStorage.getItem('todos') ? JSON.parse(window.localStorage.getItem('todos')) : []
   },
   methods: {
     addList: function addList() {
@@ -308,6 +314,10 @@ var app = new _vue2.default({
       });
       this.newTodo = '';
       // console.log(this);
+    },
+    removeTodo: function removeTodo(todo) {
+      var index = this.todoList.indexOf(todo);
+      this.todoList.splice(index, 1);
     }
   }
 });

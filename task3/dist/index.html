@@ -10,6 +10,8 @@
         <li v-for="todo in todoList"><input type="checkbox" v-model="todo.done">{{todo.title}}
           <span v-if="todo.done">已完成</span>
           <span v-else>未完成</span>
+
+          <input type="button" value="删除" @click="removeTodo(todo)">
         </li>
       </ul>
     </div>
