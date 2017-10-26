@@ -12,6 +12,17 @@ var app = new Vue({
     window.onbeforeunload = function(){
       window.localStorage.setItem('todos', JSON.stringify(self.todoList));
     }
+    var query = new AV.Query('AllTodos');
+    query.find().then(function (todos) {
+      todos.map(function(todo) {
+        todo['status'] = 1;
+      });
+      return AV.Object.saveAll(todos);
+    }).then(function(todos) {
+      console.log(todos);
+    }, function (error) {
+      // 异常处理
+    });
   },
   el: '#app',
   data: {
@@ -29,6 +40,21 @@ var app = new Vue({
     currentUser : AV.User.current()
   },
   methods: {
+    saveTodos: function(){
+       let dataString = JSON.stringify(this.todoList)
+       var AVTodos = AV.Object.extend('AllTodos');
+       var avTodos = new AVTodos();
+
+       var acl = new AV.ACL()
+       acl.setReadAccess(AV.User.current(),true);// 只有这个 user 能读
+       acl.setWriteAccess(AV.User.current(),true);// 只有这个 user 能写
+       avTodos.set('content', dataString);
+       avTodos.setACL(acl);
+       avTodos.save().then(function (todo) {
+       }, function (error) {
+         alert('保存失败');
+       });
+     },
     addList : function(){
       this.todoList.push({
         title : this.newTodo,
@@ -37,10 +63,12 @@ var app = new Vue({
       });
       this.newTodo = '';
       // console.log(this);
+      this.saveTodos();
     },
     removeTodo : function(todo){
       let index = this.todoList.indexOf(todo);
       this.todoList.splice(index, 1);
+      this.saveTodos();
     },
     register : function(){
       // 新建 AVUser 对象实例
