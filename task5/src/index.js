@@ -9,25 +9,12 @@ AV.init({
 var app = new Vue({
   created : function(){
     var self = this;
-    window.onbeforeunload = function(){
-      window.localStorage.setItem('todos', JSON.stringify(self.todoList));
-    }
-    var query = new AV.Query('AllTodos');
-    query.find().then(function (todos) {
-      todos.map(function(todo) {
-        todo['status'] = 1;
-      });
-      return AV.Object.saveAll(todos);
-    }).then(function(todos) {
-      console.log(todos);
-    }, function (error) {
-      // 异常处理
-    });
+    this.loadList();
   },
   el: '#app',
   data: {
     newTodo: '',
-    todoList :  window.localStorage.getItem('todos')?JSON.parse(window.localStorage.getItem('todos')):[],
+    todoList :  [],
     actionType : 'login',
     reginfo : {
       username : '',
@@ -40,20 +27,50 @@ var app = new Vue({
     currentUser : AV.User.current()
   },
   methods: {
+    loadList : function(){
+      if(this.currentUser){
+      var query = new AV.Query('AllTodos');
+        query.find()
+          .then((todos) => {
+            let avAllTodos = todos[0] // 因为理论上 AllTodos 只有一个，所以我们取结果的第一项
+            let id = avAllTodos.id
+          this.todoList = JSON.parse(avAllTodos.attributes.content) // 为什么有个 attributes？因为我从控制台看到的
+          this.todoList.id = id // 为什么给 todoList 这个数组设置 id？因为数组也是对象啊
+          }, function(error){
+            console.error(error)
+         })
+       }
+    },
     saveTodos: function(){
-       let dataString = JSON.stringify(this.todoList)
-       var AVTodos = AV.Object.extend('AllTodos');
-       var avTodos = new AVTodos();
+      let dataString = JSON.stringify(this.todoList);
 
-       var acl = new AV.ACL()
-       acl.setReadAccess(AV.User.current(),true);// 只有这个 user 能读
-       acl.setWriteAccess(AV.User.current(),true);// 只有这个 user 能写
-       avTodos.set('content', dataString);
-       avTodos.setACL(acl);
-       avTodos.save().then(function (todo) {
-       }, function (error) {
-         alert('保存失败');
-       });
+      if(this.todoList.id){
+        let dataString = JSON.stringify(this.todoList);
+        let avTodos = AV.Object.createWithoutData('AllTodos', this.todoList.id);
+        var acl = new AV.ACL();
+        acl.setReadAccess(AV.User.current(),true);
+        acl.setWriteAccess(AV.User.current(),true);
+        avTodos.setACL(acl);
+        avTodos.set('content', dataString);
+        avTodos.save().then(()=>{
+          console.log('更新成功');
+        });
+      }else{
+        let dataString = JSON.stringify(this.todoList);
+        var AVTodos = AV.Object.extend('AllTodos');
+        var avTodos = new AVTodos();
+        var acl = new AV.ACL();
+        acl.setReadAccess(AV.User.current(),true);
+        acl.setWriteAccess(AV.User.current(),true);
+        avTodos.setACL(acl);
+        avTodos.set('content', dataString);
+        avTodos.save().then((todo) =>{
+          this.todoList.id = todo.id;
+          console.log('保存成功');
+        }, function (error) {
+          alert('保存失败');
+        });
+       }
      },
     addList : function(){
       this.todoList.push({
@@ -90,6 +107,7 @@ var app = new Vue({
       AV.User.logIn(self.userinfo.username, self.userinfo.password).then(function (loginedUser) {
         alert('登陆成功！');
         self.currentUser = AV.User.current();
+        this.loadList();
       }, function (error) {
         alert('登陆失败！')
       });

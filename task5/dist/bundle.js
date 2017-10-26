@@ -305,25 +305,12 @@ _leancloudStorage2.default.init({
 var app = new _vue2.default({
   created: function created() {
     var self = this;
-    window.onbeforeunload = function () {
-      window.localStorage.setItem('todos', JSON.stringify(self.todoList));
-    };
-    var query = new _leancloudStorage2.default.Query('AllTodos');
-    query.find().then(function (todos) {
-      todos.map(function (todo) {
-        todo['status'] = 1;
-      });
-      return _leancloudStorage2.default.Object.saveAll(todos);
-    }).then(function (todos) {
-      console.log(todos);
-    }, function (error) {
-      // 异常处理
-    });
+    this.loadList();
   },
   el: '#app',
   data: {
     newTodo: '',
-    todoList: window.localStorage.getItem('todos') ? JSON.parse(window.localStorage.getItem('todos')) : [],
+    todoList: [],
     actionType: 'login',
     reginfo: {
       username: '',
@@ -336,19 +323,53 @@ var app = new _vue2.default({
     currentUser: _leancloudStorage2.default.User.current()
   },
   methods: {
-    saveTodos: function saveTodos() {
-      var dataString = JSON.stringify(this.todoList);
-      var AVTodos = _leancloudStorage2.default.Object.extend('AllTodos');
-      var avTodos = new AVTodos();
+    loadList: function loadList() {
+      var _this = this;
 
-      var acl = new _leancloudStorage2.default.ACL();
-      acl.setReadAccess(_leancloudStorage2.default.User.current(), true); // 只有这个 user 能读
-      acl.setWriteAccess(_leancloudStorage2.default.User.current(), true); // 只有这个 user 能写
-      avTodos.set('content', dataString);
-      avTodos.setACL(acl);
-      avTodos.save().then(function (todo) {}, function (error) {
-        alert('保存失败');
-      });
+      if (this.currentUser) {
+        var query = new _leancloudStorage2.default.Query('AllTodos');
+        query.find().then(function (todos) {
+          var avAllTodos = todos[0]; // 因为理论上 AllTodos 只有一个，所以我们取结果的第一项
+          var id = avAllTodos.id;
+          _this.todoList = JSON.parse(avAllTodos.attributes.content); // 为什么有个 attributes？因为我从控制台看到的
+          _this.todoList.id = id; // 为什么给 todoList 这个数组设置 id？因为数组也是对象啊
+        }, function (error) {
+          console.error(error);
+        });
+      }
+    },
+    saveTodos: function saveTodos() {
+      var _this2 = this;
+
+      var dataString = JSON.stringify(this.todoList);
+
+      if (this.todoList.id) {
+        var _dataString = JSON.stringify(this.todoList);
+        var _avTodos = _leancloudStorage2.default.Object.createWithoutData('AllTodos', this.todoList.id);
+        var acl = new _leancloudStorage2.default.ACL();
+        acl.setReadAccess(_leancloudStorage2.default.User.current(), true);
+        acl.setWriteAccess(_leancloudStorage2.default.User.current(), true);
+        _avTodos.setACL(acl);
+        _avTodos.set('content', _dataString);
+        _avTodos.save().then(function () {
+          console.log('更新成功');
+        });
+      } else {
+        var _dataString2 = JSON.stringify(this.todoList);
+        var AVTodos = _leancloudStorage2.default.Object.extend('AllTodos');
+        var avTodos = new AVTodos();
+        var acl = new _leancloudStorage2.default.ACL();
+        acl.setReadAccess(_leancloudStorage2.default.User.current(), true);
+        acl.setWriteAccess(_leancloudStorage2.default.User.current(), true);
+        avTodos.setACL(acl);
+        avTodos.set('content', _dataString2);
+        avTodos.save().then(function (todo) {
+          _this2.todoList.id = todo.id;
+          console.log('保存成功');
+        }, function (error) {
+          alert('保存失败');
+        });
+      }
     },
     addList: function addList() {
       this.todoList.push({
@@ -385,6 +406,7 @@ var app = new _vue2.default({
       _leancloudStorage2.default.User.logIn(self.userinfo.username, self.userinfo.password).then(function (loginedUser) {
         alert('登陆成功！');
         self.currentUser = _leancloudStorage2.default.User.current();
+        this.loadList();
       }, function (error) {
         alert('登陆失败！');
       });
