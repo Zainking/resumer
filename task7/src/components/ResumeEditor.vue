@@ -1,25 +1,22 @@
-<template>
-  <div class="ResumerEditor">
-    <h1>{{ msg }}</h1>
-  </div>
+<template lang="jade">
+div.ResumeEditor
+  h1 {{ msg }}
 </template>
 
 <script>
 export default {
-  name: 'ResumerEditor',
+  name: 'ResumeEditor',
   data: () => ({
     msg: 'I am resumer editor.'
   })
 }
 </script>
 
-<style scoped>
-h1 {
+<style scoped lang="stylus">
+h1
   font-weight: normal;
-}
-.ResumerEditor{
+.ResumeEditor
   background-color: #fff;
   box-shadow: #ddd 0 0 10px;
   width: 35%;
-}
 </style>

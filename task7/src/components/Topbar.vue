@@ -1,26 +1,22 @@
-<template>
-  <div class="Topbar">
-    <h1>Resumer</h1>
-  </div>
+<template lang="jade">
+div.Topbar
+  h1 Resumer
 </template>
 
 <script>
 export default {
   name: 'Topbar',
   data: () => ({
-    // msg: 'I am top bar.'
   })
 }
 </script>
 
-<style scoped>
-h1 {
+<style scoped lang="stylus">
+h1
   font-weight: normal;
   font-size: 24px;
-}
-.Topbar{
+.Topbar
   padding: 21px;
   background-color: #fff;
   box-shadow: #ddd 0 0 10px;
-}
 </style>
