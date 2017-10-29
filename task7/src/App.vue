@@ -33,10 +33,12 @@ export default {
 header
   min-width: 1024px;
   max-width: 1440px;
+  width: 100%;
   margin: 16px 0;
 main
   min-width: 1024px;
   max-width: 1440px;
+  width: 100%;
   margin: 16px 0;
   flex-grow: 1;
   flex-direction: row;
