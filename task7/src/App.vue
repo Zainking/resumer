@@ -9,6 +9,7 @@ div#app
 
 <script>
 import '@/assets/reset.css'
+import icons from './assets/icons'
 
 import Topbar from '@/components/Topbar'
 import ResumeEditor from '@/components/ResumeEditor'
@@ -16,6 +17,9 @@ import ResumePreview from '@/components/ResumePreview'
 
 export default {
   name: 'app',
+  created: function () {
+    document.body.insertAdjacentHTML('afterbegin', icons)
+  },
   data: () => ({
   }),
   components: {
