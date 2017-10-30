@@ -1,37 +1,25 @@
 <template lang="jade">
-div#index
-  Topbar.topbar
+div#changepass
   div.content
     h1 Resumer
-    p 一个很方很方的简历编辑器
-    a(href='javascript:;' class='center-btn') 现在开始
+    p 修改密码
+    input(placeholder="请输入原密码" type="password")
+    input(placeholder="请输入新密码" type="password")
+    input(placeholder="请确认新密码" type="password")
+    a(href='javascript:;' class='center-btn') 修改密码
 </template>
 
 <script>
-import store from '@/store/'
-import Topbar from '@/components/IndexComponents/Topbar'
-
 export default {
-  created () {
-    store.commit('increment')
-    console.log(store.state.count)
-  },
-  name: 'index',
+  name: 'changepass',
   data: () => ({
-  }),
-  components: { Topbar }
+  })
 }
 </script>
 
 <style lang="stylus" scoped>
-.topbar
-  display: block;
-  background-color: #fff;
-  position: relative;
-  z-index: 2;
 .content
   display: flex;
-  margin-top: -51px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -45,14 +33,22 @@ export default {
   p
     font-size: 20px;
     color: #888;
+  input
+    display: block;
+    padding: 15px 30px;
+    text-align: center;
+    margin: 20px 0;
+    width: 183px;
   .center-btn
     display: block;
+    text-align: center;
     text-decoration: none;
     color: #fff;
     padding: 15px 30px;
     background-color: #02af5f;
     transition: all 0.5s;
-    margin-top: 50px;
+    margin-top: 20px;
+    width: 183px;
   .center-btn:hover
     background-color: #ffa500;
 </style>

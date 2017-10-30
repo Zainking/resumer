@@ -27,7 +27,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 #resumer
   display: flex;
   flex-direction: column;
