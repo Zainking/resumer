@@ -3,17 +3,34 @@ div#register
   div.content
     h1 Resumer
     p 注册
-    input(placeholder="请输入用户名" type=text)
-    input(placeholder="请输入密码" type="password")
-    input(placeholder="请确认密码" type="password")
-    a(href='javascript:;' class='center-btn') 现在注册
+    input(placeholder="请输入用户名" type="text" v-model='username')
+    input(placeholder="请输入密码" type="password" v-model='password')
+    input(placeholder="请确认密码" type="password" v-model='rePassword')
+    a(href='javascript:;' class='center-btn' @click="doReg()") 现在注册
 </template>
 
 <script>
+import api from '@/api/'
+
 export default {
   name: 'register',
   data: () => ({
-  })
+    username: '',
+    password: '',
+    rePassword: ''
+  }),
+  methods: {
+    doReg () {
+      if (this.username && this.password && this.rePassword) {
+        if (this.password === this.rePassword) {
+          api.register(this.username, this.password, () => {
+            alert('注册成功！')
+            this.$router.push('/')
+          })
+        } else alert('两次密码须输入一致！')
+      } else alert('用户名，密码不能为空！')
+    }
+  }
 }
 </script>
 

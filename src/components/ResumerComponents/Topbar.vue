@@ -4,8 +4,7 @@ div.Topbar
   div.btnbox
     a.btn(href='javascript:;') 保存
     a.btn(href='javascript:;') 预览
-    a.btn(href='javascript:;') 修改密码
-    a.btn(href='javascript:;') 登出
+    a.btn(href='javascript:;') 返回首页
 </template>
 
 <script>

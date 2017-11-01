@@ -2,22 +2,36 @@
 div.Topbar
   h1 Resumer
   div.btnbox
-    div(v-show="!login")
-      input(type=text placeholder='请输入用户名')
-      input(type=password placeholder='请输入密码')
-      a.btn(href='javascript:;' @click="login = true") 登陆
-    div.login(v-show="login")
-      span 欢迎，username
+    div(v-show="!currentUser")
+      input(type="text" placeholder='请输入用户名' v-modal="username")
+      input(type="password" placeholder='请输入密码' v-modal="password")
+      a.btn(href='javascript:;' @click="login()") 登陆
+    div.login(v-show="currentUser")
+      span 欢迎，{{currentUser}}
       a.btn(href='javascript:;') 修改密码
-      a.btn(href='javascript:;' @click="login = false") 登出
+      a.btn(href='javascript:;' @click="logout") 登出
 </template>
 
 <script>
+import store from '@/store/'
+
 export default {
   name: 'Topbar',
   data: () => ({
-    login: false
-  })
+    username: '',
+    password: ''
+  }),
+  computed: {
+    currentUser: () => store.state.currentUser
+  },
+  methods: {
+    login: function () {
+      store.commit('login', this.username, this.password)
+    },
+    logout: () => {
+      store.commit('logout')
+    }
+  }
 }
 </script>
 
