@@ -8,13 +8,12 @@ div#index
 </template>
 
 <script>
-import store from '@/store/'
 import Topbar from '@/components/IndexComponents/Topbar'
 
 export default {
   created () {
-    store.commit('increment')
-    console.log(store.state.count)
+    this.$store.commit('increment')
+    console.log(this.$store.state.count)
   },
   name: 'index',
   data: () => ({

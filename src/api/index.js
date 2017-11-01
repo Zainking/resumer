@@ -21,16 +21,12 @@ export default {
     })
   },
   login: function (username, password) {
-    AV.User.logIn(username, password).then(function (loginedUser) {
-      return AV.User.current()
-    }, function (error) {
+    AV.User.logIn(username, password).then(function (loginedUser) {}, function (error) {
       alert(error)
-      return false
     })
   },
   logout: function () {
     AV.User.logOut()
-    return true
   },
-  currentUser: () => AV.User.current()
+  currentUser: AV.User.current()
 }

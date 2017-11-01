@@ -3,17 +3,16 @@ div.Topbar
   h1 Resumer
   div.btnbox
     div(v-show="!currentUser")
-      input(type="text" placeholder='请输入用户名' v-modal="username")
-      input(type="password" placeholder='请输入密码' v-modal="password")
+      input(type="text" placeholder='请输入用户名' v-model="username")
+      input(type="password" placeholder='请输入密码' v-model="password")
       a.btn(href='javascript:;' @click="login()") 登陆
     div.login(v-show="currentUser")
-      span 欢迎，{{currentUser}}
+      span 欢迎，{{currentUser?currentUser.attributes.username:"加载中"}}
       a.btn(href='javascript:;') 修改密码
-      a.btn(href='javascript:;' @click="logout") 登出
+      a.btn(href='javascript:;' @click="logout()") 登出
 </template>
 
 <script>
-import store from '@/store/'
 
 export default {
   name: 'Topbar',
@@ -21,15 +20,26 @@ export default {
     username: '',
     password: ''
   }),
+  created () {
+    console.log('start: ' + this.currentUser)
+  },
   computed: {
-    currentUser: () => store.state.currentUser
+    currentUser () {
+      return this.$store.state.currentUser
+    }
   },
   methods: {
     login: function () {
-      store.commit('login', this.username, this.password)
+      var self = this
+      this.$store.commit('login', {username: self.username, password: self.password})
+      console.log('topbar computed: ' + this.currentUser)
+      setTimeout(function () {
+        console.log('[Timeout]topbar computed: ' + this.currentUser)
+      }, 2000)
     },
-    logout: () => {
-      store.commit('logout')
+    logout: function () {
+      this.$store.commit('logout')
+      console.log('topbar computed: ' + this.currentUser)
     }
   }
 }

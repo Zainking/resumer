@@ -5,8 +5,10 @@ div#app
 
 <script>
 import '@/assets/reset.css'
+import store from '@/store/'
 
 export default {
-  name: 'app'
+  name: 'app',
+  store
 }
 </script>
