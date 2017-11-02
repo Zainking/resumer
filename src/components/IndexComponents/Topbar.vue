@@ -8,7 +8,6 @@ div.Topbar
       a.btn(href='javascript:;' @click="login()") 登陆
     div.login(v-show="currentUser")
       span 欢迎，{{currentUser?currentUser.attributes.username:"加载中"}}
-      router-link.btn(to='/changepass') 修改密码
       a.btn(href='javascript:;' @click="logout()") 登出
 </template>
 
