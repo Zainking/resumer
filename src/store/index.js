@@ -70,14 +70,20 @@ const store = new Vuex.Store({
         {item: '微信', type: 'text'}
       ]
     }
-  ],
+    ],
     resume: {
+      workhistory: [
+        ['', '', '', '']
+      ],
       profile: [
         ['张全蛋', '18', '长沙']
       ],
       awards: [
         ['宇宙装逼一等奖', '装逼得来的'],
         ['宇宙装逼一等奖', '装逼得来的']
+      ],
+      education: [
+        ['北京大学', '博士', '1991-09-20', '1995-04-05']
       ]
     }
   },
@@ -87,6 +93,38 @@ const store = new Vuex.Store({
     },
     logout (state) {
       state.currentUser = false
+    },
+    singleInit (state) {
+      state.resumeTemplate.forEach(function (val, idx) {
+        if (val.isSingle) {
+          if (!state.resume[val.name]) {
+            state.resume[val.name] = [[]]
+          }
+          val.template.forEach(function (item, index) {
+            if (!state.resume[val.name][0][index]) {
+              state.resume[val.name][0][index] = ''
+            }
+          })
+        }
+      })
+    },
+    addItem (state, payload) {
+      var arr = []
+      var name = state.resumeTemplate[payload.order].name
+      state.resumeTemplate[payload.order].template.forEach(function () {
+        arr.push('')
+      })
+      if (!state.resume[name]) {
+        Vue.set(state.resume, name, [])
+      }
+      Vue.set(state.resume[name], state.resume[name].length, arr)
+    },
+    removeItem (state, payload) {
+      var name = state.resumeTemplate[payload.order].name
+      state.resume[name].splice(payload.index, 1)
+    },
+    doInput (state, payload) {
+      state.resume[payload.name][payload.index][payload.idx] = payload.val
     }
   },
   actions: {
