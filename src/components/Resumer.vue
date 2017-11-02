@@ -22,6 +22,7 @@ export default {
       alert('请先登录')
       this.$router.push('/')
     }
+    this.$store.dispatch('resumeInit')
     document.body.insertAdjacentHTML('afterbegin', icons)
   },
   data: () => ({

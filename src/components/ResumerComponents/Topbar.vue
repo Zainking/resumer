@@ -2,17 +2,22 @@
 div.Topbar
   h1 Resumer for {{this.$store.state.currentUser.attributes.username}}
   div.btnbox
-    a.btn(href='javascript:;') 保存
+    a.btn(href='javascript:;' @click='save()') 保存
     a.btn(href='javascript:;' @click='setPreviewToFather()') 预览
     router-link.btn(to='/') 返回首页
 </template>
 
 <script>
+import api from '@/api/'
+
 export default {
   name: 'Topbar',
   methods: {
     setPreviewToFather () {
       this.$emit('setPreviewToFather')
+    },
+    save () {
+      api.setResume(this.$store, this.$store.state.resume)
     }
   }
 }

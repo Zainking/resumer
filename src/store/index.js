@@ -71,21 +71,7 @@ const store = new Vuex.Store({
       ]
     }
     ],
-    resume: {
-      workhistory: [
-        ['', '', '', '']
-      ],
-      profile: [
-        ['张全蛋', '18', '长沙']
-      ],
-      awards: [
-        ['宇宙装逼一等奖', '装逼得来的'],
-        ['宇宙装逼一等奖', '装逼得来的']
-      ],
-      education: [
-        ['北京大学', '博士', '1991-09-20', '1995-04-05']
-      ]
-    }
+    resume: {}
   },
   mutations: {
     login (state, payload) {
@@ -93,6 +79,7 @@ const store = new Vuex.Store({
     },
     logout (state) {
       state.currentUser = false
+      state.resume = {}
     },
     singleInit (state) {
       state.resumeTemplate.forEach(function (val, idx) {
@@ -125,12 +112,24 @@ const store = new Vuex.Store({
     },
     doInput (state, payload) {
       state.resume[payload.name][payload.index][payload.idx] = payload.val
+    },
+    setResumeId (state, payload) {
+      Vue.set(state.resume, 'id', payload.id)
+    },
+    resumeInit (state, payload) {
+      state.resume = payload.resume
+      Vue.set(state.resume, 'id', payload.id)
     }
   },
   actions: {
     login ({commit}, payload) {
       api.login(payload.username, payload.password, (currentUser) => {
         store.commit('login', currentUser)
+      })
+    },
+    resumeInit ({commit}) {
+      api.getResume((resume, id) => {
+        store.commit('resumeInit', {resume, id})
       })
     }
   }
