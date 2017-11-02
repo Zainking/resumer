@@ -20,13 +20,12 @@ export default {
       return false
     })
   },
-  login: function (username, password) {
-    AV.User.logIn(username, password).then(function (loginedUser) {}, function (error) {
+  login: function (username, password, callback) {
+    AV.User.logIn(username, password).then(function (loginedUser) {
+      callback(AV.User.current())
+    }, function (error) {
       alert(error)
     })
-  },
-  logout: function () {
-    AV.User.logOut()
   },
   currentUser: AV.User.current()
 }

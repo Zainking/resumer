@@ -6,28 +6,25 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    count: 0
-    // currentUser: api.currentUser
-  },
-  computed: {
-    currentUser: function () {
-      return api.currentUser
-    }
+    count: 0,
+    currentUser: api.currentUser
   },
   mutations: {
     increment (state) {
       state.count++
     },
     login (state, payload) {
-      api.login(payload.username, payload.password)
-      console.log('store commit: ' + this.currentUser)
-      setTimeout(function () {
-        console.log(api.currentUser)
-      }, 2000)
+      state.currentUser = payload
     },
     logout (state) {
-      api.logout()
-      console.log('store commit: ' + this.currentUser)
+      state.currentUser = false
+    }
+  },
+  actions: {
+    login ({commit}, payload) {
+      api.login(payload.username, payload.password, (currentUser) => {
+        store.commit('login', currentUser)
+      })
     }
   }
 })

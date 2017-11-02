@@ -12,6 +12,12 @@ div#changepass
 <script>
 export default {
   name: 'changepass',
+  created () {
+    if (!this.$store.state.currentUser) {
+      alert('请先登录')
+      this.$router.push('/')
+    }
+  },
   data: () => ({
   })
 }

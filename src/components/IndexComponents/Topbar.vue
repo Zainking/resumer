@@ -8,7 +8,7 @@ div.Topbar
       a.btn(href='javascript:;' @click="login()") 登陆
     div.login(v-show="currentUser")
       span 欢迎，{{currentUser?currentUser.attributes.username:"加载中"}}
-      a.btn(href='javascript:;') 修改密码
+      router-link.btn(to='/changepass') 修改密码
       a.btn(href='javascript:;' @click="logout()") 登出
 </template>
 
@@ -20,9 +20,6 @@ export default {
     username: '',
     password: ''
   }),
-  created () {
-    console.log('start: ' + this.currentUser)
-  },
   computed: {
     currentUser () {
       return this.$store.state.currentUser
@@ -31,15 +28,10 @@ export default {
   methods: {
     login: function () {
       var self = this
-      this.$store.commit('login', {username: self.username, password: self.password})
-      console.log('topbar computed: ' + this.currentUser)
-      setTimeout(function () {
-        console.log('[Timeout]topbar computed: ' + this.currentUser)
-      }, 2000)
+      this.$store.dispatch('login', {username: self.username, password: self.password})
     },
     logout: function () {
       this.$store.commit('logout')
-      console.log('topbar computed: ' + this.currentUser)
     }
   }
 }

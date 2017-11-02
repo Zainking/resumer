@@ -17,6 +17,10 @@ import ResumePreview from '@/components/ResumerComponents/ResumePreview'
 export default {
   name: 'resumer',
   created: function () {
+    if (!this.$store.state.currentUser) {
+      alert('请先登录')
+      this.$router.push('/')
+    }
     document.body.insertAdjacentHTML('afterbegin', icons)
   },
   data: () => ({

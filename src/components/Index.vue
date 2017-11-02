@@ -4,7 +4,7 @@ div#index
   div.content
     h1 Resumer
     p 一个很方很方的简历编辑器
-    a(href='javascript:;' class='center-btn') 现在开始
+    a(href='javascript:;' class='center-btn' @click='doStart()') 现在开始
 </template>
 
 <script>
@@ -18,6 +18,15 @@ export default {
   name: 'index',
   data: () => ({
   }),
+  methods: {
+    doStart () {
+      if (this.$store.state.currentUser) {
+        this.$router.push('/resumer')
+      } else {
+        this.$router.push('/register')
+      }
+    }
+  },
   components: { Topbar }
 }
 </script>
