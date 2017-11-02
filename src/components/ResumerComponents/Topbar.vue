@@ -1,6 +1,6 @@
 <template lang="jade">
 div.Topbar
-  h1 Resumer for username
+  h1 Resumer for {{this.$store.state.currentUser.attributes.username}}
   div.btnbox
     a.btn(href='javascript:;') 保存
     a.btn(href='javascript:;') 预览

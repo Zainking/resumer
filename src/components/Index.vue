@@ -4,23 +4,24 @@ div#index
   div.content
     h1 Resumer
     p 一个很方很方的简历编辑器
-    a(href='javascript:;' class='center-btn' @click='doStart()') 现在开始
+    a(href='javascript:;' class='center-btn' @click='doStart()') {{currentUser?"进入我的简历":"现在开始"}}
 </template>
 
 <script>
 import Topbar from '@/components/IndexComponents/Topbar'
 
 export default {
-  created () {
-    this.$store.commit('increment')
-    console.log(this.$store.state.count)
-  },
   name: 'index',
   data: () => ({
   }),
+  computed: {
+    currentUser () {
+      return this.$store.state.currentUser
+    }
+  },
   methods: {
     doStart () {
-      if (this.$store.state.currentUser) {
+      if (this.currentUser) {
         this.$router.push('/resumer')
       } else {
         this.$router.push('/register')

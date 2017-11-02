@@ -6,13 +6,9 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    count: 0,
     currentUser: api.currentUser
   },
   mutations: {
-    increment (state) {
-      state.count++
-    },
     login (state, payload) {
       state.currentUser = payload
     },
