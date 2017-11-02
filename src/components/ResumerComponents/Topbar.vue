@@ -3,15 +3,18 @@ div.Topbar
   h1 Resumer for {{this.$store.state.currentUser.attributes.username}}
   div.btnbox
     a.btn(href='javascript:;') 保存
-    a.btn(href='javascript:;') 预览
+    a.btn(href='javascript:;' @click='setPreviewToFather()') 预览
     router-link.btn(to='/') 返回首页
 </template>
 
 <script>
 export default {
   name: 'Topbar',
-  data: () => ({
-  })
+  methods: {
+    setPreviewToFather () {
+      this.$emit('setPreviewToFather')
+    }
+  }
 }
 </script>
 
