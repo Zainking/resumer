@@ -44,6 +44,7 @@ export default {
   width: 35%;
   display: flex;
   flex-direction: row;
+  max-height: 80vh;
   aside
     background-color: #000;
     color: #fff;

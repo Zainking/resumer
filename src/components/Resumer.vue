@@ -44,7 +44,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   header
     min-width: 1024px;
     max-width: 1440px;
