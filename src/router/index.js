@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '@/components/Index'
-import Resumer from '@/components/Resumer'
-import Register from '@/components/Register'
+
+const Index = () => import('@/components/Index')
+const Resumer = () => import('@/components/Resumer')
+const Register = () => import('@/components/Register')
 
 Vue.use(Router)
 

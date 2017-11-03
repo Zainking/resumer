@@ -29,17 +29,15 @@ export default {
   },
   currentUser: AV.User.current(),
   getResume: function (callback) {
-    if (this.currentUser) {
-      var query = new AV.Query('Resume')
-      query.find()
-        .then(function (resumes) {
-          var resume = resumes[0].attributes.resume
-          var id = resumes[0].id
-          callback(JSON.parse(resume), id)
-        }, function (error) {
-          alert(error)
-        })
-    }
+    var query = new AV.Query('Resume')
+    query.find()
+      .then(function (resumes) {
+        var resume = resumes[0].attributes.resume
+        var id = resumes[0].id
+        callback(JSON.parse(resume), id)
+      }, function (error) {
+        alert(error)
+      })
   },
   setResume: function (store, currentResume) {
     var setACL = function (avResumes) {
@@ -69,5 +67,8 @@ export default {
         alert(error)
       })
     }
+  },
+  logout: function () {
+    AV.User.logOut()
   }
 }

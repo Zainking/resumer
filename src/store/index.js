@@ -80,6 +80,7 @@ const store = new Vuex.Store({
     logout (state) {
       state.currentUser = false
       state.resume = {}
+      api.logout()
     },
     singleInit (state) {
       state.resumeTemplate.forEach(function (val, idx) {
