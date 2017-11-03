@@ -1,6 +1,6 @@
 <template lang="jade">
 div.ResumePreview
-  h1 {{ msg }}
+  h1 {{ clearResume }}
 </template>
 
 <script>
@@ -8,7 +8,12 @@ export default {
   name: 'ResumePreview',
   data: () => ({
     msg: 'I am resumer preview.'
-  })
+  }),
+  computed: {
+    clearResume () {
+      return this.$store.getters.clearResume
+    }
+  }
 }
 </script>
 

@@ -34,7 +34,7 @@ export default {
       query.find()
         .then(function (resumes) {
           var resume = resumes[0].attributes.resume
-          var id = resume.id
+          var id = resumes[0].id
           callback(JSON.parse(resume), id)
         }, function (error) {
           alert(error)

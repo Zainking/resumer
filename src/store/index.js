@@ -112,6 +112,7 @@ const store = new Vuex.Store({
     },
     doInput (state, payload) {
       state.resume[payload.name][payload.index][payload.idx] = payload.val
+      state.resume = JSON.parse(JSON.stringify(state.resume))
     },
     setResumeId (state, payload) {
       Vue.set(state.resume, 'id', payload.id)
@@ -119,6 +120,31 @@ const store = new Vuex.Store({
     resumeInit (state, payload) {
       state.resume = payload.resume
       Vue.set(state.resume, 'id', payload.id)
+    }
+  },
+  getters: {
+    clearResume: state => {
+      var clearResume = {}
+      for (var key in state.resume) {
+        if (key === 'id' || state.resume[key].length === 0) {
+          continue
+        }
+        clearResume[key] = state.resume[key].filter(function (item) {
+          var isUnEmpty = false
+          item.forEach(function (i) {
+            if (i) {
+              isUnEmpty = true
+            }
+          })
+          return isUnEmpty
+        })
+      }
+      for (var i in clearResume) {
+        if (clearResume[i].length === 0) {
+          delete clearResume[i]
+        }
+      }
+      return clearResume
     }
   },
   actions: {
