@@ -3,7 +3,7 @@ div.ResumeEditor
   aside
     ul
       li(v-for="item in $store.state.resumeTemplate" v-bind:class="{active: item.name === selected}" @click="selected = item.name")
-        svg
+        svg(viewBox="0,0,240,200")
           use(v-bind:xlink:href="'#icon-' + item.icon")
   div.pannel
     ol
