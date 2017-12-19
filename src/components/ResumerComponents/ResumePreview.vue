@@ -51,6 +51,8 @@ export default {
   ol.main
     flex-grow: 1;
     flex-direction: column;
+    word-wrap: break-word;
+    word-break:break-all;
     .profile,.contacts
       display: none;
     h3
